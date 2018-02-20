@@ -120,7 +120,7 @@ def decode_memo(priv, message):
     """
     " decode structure "
     raw = base58decode(message[1:])
-    print(raw)
+
     from_key = PublicKey(raw[:66])
     raw = raw[66:]
     to_key = PublicKey(raw[:66])
