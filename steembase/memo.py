@@ -1,6 +1,7 @@
 import hashlib
 import struct
 from binascii import hexlify, unhexlify
+from collections import OrderedDict
 import sys
 
 from .operations import Memo
@@ -81,11 +82,7 @@ def encode_memo(priv, pub, nonce, message, **kwargs):
     from steembase import transactions
     shared_secret = get_shared_secret(priv, pub)
     aes, check = init_aes(shared_secret, nonce)
-    raw = 0
-    if sys.version > '3.0':
-        raw = bytes(message, 'utf8')
-    else:
-        raw = bytes(message).encode('utf8')
+    raw = bytes(message, 'utf8')
     " Padding "
     BS = 16
     if len(raw) % BS:
@@ -93,16 +90,16 @@ def encode_memo(priv, pub, nonce, message, **kwargs):
     " Encryption "
     cipher = hexlify(aes.encrypt(raw)).decode('ascii')
     prefix = kwargs.pop("prefix", default_prefix)
-    s = {
-        "from": format(priv.pubkey, prefix),
-        "to": format(pub, prefix),
-        "nonce": nonce,
-        "check": check,
-        "encrypted": cipher,
-        "from_priv": repr(priv),
-        "to_pub": repr(pub),
-        "shared_secret": shared_secret,
-    }
+    s = OrderedDict([
+        ("from",format(priv.pubkey, prefix)),
+        ("to", format(pub, prefix)),
+        ("nonce", nonce),
+        ("check", check),
+        ("encrypted", cipher),
+        ("from_priv", repr(priv)),
+        ("to_pub", repr(pub)),
+        ("shared_secret", shared_secret),
+    ])
     tx = Memo(**s)
     return "#" + base58encode(hexlify(bytes(tx)).decode("ascii"))
 

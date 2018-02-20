@@ -196,14 +196,8 @@ class HttpClient(object):
 
         try:
             response = self.request(body=body)
-            errorList = 0
-            if sys.version > '3':
-                errorList = {MaxRetryError, ReadTimeoutError, ProtocolError,
-                             RemoteDisconnected, ConnectionResetError}
-            else:
-                errorList = {MaxRetryError, ReadTimeoutError, ProtocolError,
-                             HTTPException}
-        except (errorList) as e:
+        except (MaxRetryError, ReadTimeoutError, ProtocolError,
+                             HTTPException) as e:
             # if we broadcasted a transaction, always raise
             # this is to prevent potential for double spend scenario
             if api == 'network_broadcast_api':

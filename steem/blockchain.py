@@ -300,10 +300,8 @@ class Blockchain(object):
     def hash_op(event):
         """ This method generates a hash of blockchain operation. """
         data = json.dumps(event, sort_keys=True)
-        if sys.version > '3':
-            return hashlib.sha1(bytes(data, 'utf-8')).hexdigest()
-        else:
-            return hashlib.sha1(bytes(data).encode('utf-8')).hexdigest()
+
+        return hashlib.sha1(bytes(data, 'utf-8')).hexdigest()
 
     def get_all_usernames(self, *args, **kwargs):
         """ Fetch the full list of STEEM usernames. """

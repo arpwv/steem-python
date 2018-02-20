@@ -135,10 +135,8 @@ def base58decode(base58_str):
 
 
 def base58encode(hexstring):
-    if sys.version > '3':
-        byteseq = bytes(unhexlify(bytes(hexstring, 'ascii')))
-    else:
-        byteseq = bytearray.fromhex(hexstring)
+
+    byteseq = bytes(unhexlify(bytes(hexstring, 'ascii')))
     n = 0
     leading_zeroes_count = 0
     for c in byteseq:

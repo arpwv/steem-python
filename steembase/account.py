@@ -26,10 +26,8 @@ class PasswordKey(object):
         """ Derive private key from the brain key and the current sequence
             number
         """
-        if sys.version > '3':
-            a = bytes(self.account + self.role + self.password, 'utf8')
-        else:
-            a = bytes(self.account + self.role + self.password).encode('utf8')
+
+        a = bytes(self.account + self.role + self.password, 'utf8')
         s = hashlib.sha256(a).digest()
         return PrivateKey(hexlify(s).decode('ascii'))
 
@@ -95,10 +93,8 @@ class BrainKey(object):
             number
         """
         encoded = "%s %d" % (self.brainkey, self.sequence)
-        if sys.version > '3':
-            a = bytes(encoded, 'ascii')
-        else:
-            a = bytes(encoded).encode('ascii')
+
+        a = bytes(encoded, 'ascii')
         s = hashlib.sha256(hashlib.sha512(a).digest()).digest()
         return PrivateKey(hexlify(s).decode('ascii'))
 
