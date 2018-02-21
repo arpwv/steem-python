@@ -1,3 +1,10 @@
+from __future__ import division
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import bytes
+from future import standard_library
+standard_library.install_aliases()
 import hashlib
 import os
 import re
@@ -353,4 +360,5 @@ class PrivateKey(object):
 
     def __bytes__(self):
         """ Returns the raw private key """
-        return bytes(self._wif)
+
+        return self._wif.__bytes__()

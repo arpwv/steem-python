@@ -1,3 +1,12 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import super
+from builtins import bytes
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import importlib
 import json
 import re
@@ -19,7 +28,7 @@ asset_precision = {
 }
 
 
-class Operation:
+class Operation(object):
     def __init__(self, op):
         if isinstance(op, list) and len(op) == 2:
             if isinstance(op[0], int):
@@ -231,7 +240,7 @@ class Comment(GrapheneObject):
                 ]))
 
 
-class Amount:
+class Amount(object):
     def __init__(self, d):
         self.amount, self.asset = d.strip().split(" ")
         self.amount = float(self.amount)

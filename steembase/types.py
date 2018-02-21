@@ -1,3 +1,11 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import bytes
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import json
 import struct
 import time
@@ -73,7 +81,7 @@ def JsonObj(data):
                              (type(data).__name__, data.__class__))
 
 
-class Uint8:
+class Uint8(object):
     def __init__(self, d):
         self.data = d
 
@@ -84,7 +92,7 @@ class Uint8:
         return '%d' % self.data
 
 
-class Int16:
+class Int16(object):
     def __init__(self, d):
         self.data = int(d)
 
@@ -95,7 +103,7 @@ class Int16:
         return '%d' % self.data
 
 
-class Uint16:
+class Uint16(object):
     def __init__(self, d):
         self.data = int(d)
 
@@ -106,7 +114,7 @@ class Uint16:
         return '%d' % self.data
 
 
-class Uint32:
+class Uint32(object):
     def __init__(self, d):
         self.data = int(d)
 
@@ -117,7 +125,7 @@ class Uint32:
         return '%d' % self.data
 
 
-class Uint64:
+class Uint64(object):
     def __init__(self, d):
         self.data = int(d)
 
@@ -128,7 +136,7 @@ class Uint64:
         return '%d' % self.data
 
 
-class Varint32:
+class Varint32(object):
     def __init__(self, d):
         self.data = d
 
@@ -139,7 +147,7 @@ class Varint32:
         return '%d' % self.data
 
 
-class Int64:
+class Int64(object):
     def __init__(self, d):
         self.data = d
 
@@ -150,7 +158,7 @@ class Int64:
         return '%d' % self.data
 
 
-class String:
+class String(object):
     def __init__(self, d):
         self.data = d
 
@@ -186,7 +194,7 @@ class String:
         return bytes("".join(r), "utf-8")
 
 
-class Bytes:
+class Bytes(object):
     def __init__(self, d, length=None):
         self.data = d
         if length:
@@ -203,7 +211,7 @@ class Bytes:
         return str(self.data)
 
 
-class Void:
+class Void(object):
     def __init__(self):
         pass
 
@@ -214,7 +222,7 @@ class Void:
         return ""
 
 
-class Array:
+class Array(object):
     def __init__(self, d):
         self.data = d
         self.length = Varint32(len(self.data))
@@ -236,7 +244,7 @@ class Array:
         return json.dumps(r)
 
 
-class PointInTime:
+class PointInTime(object):
     def __init__(self, d):
         self.data = d
 
@@ -249,7 +257,7 @@ class PointInTime:
         return self.data
 
 
-class Signature:
+class Signature(object):
     def __init__(self, d):
         self.data = d
 
@@ -273,7 +281,7 @@ class Set(Array):  # Set = Array
         Array.__init__(self, d)
 
 
-class FixedArray:
+class FixedArray(object):
     def __init__(self, d):
         raise NotImplementedError
 
@@ -284,7 +292,7 @@ class FixedArray:
         raise NotImplementedError
 
 
-class Optional:
+class Optional(object):
     def __init__(self, d):
         self.data = d
 
@@ -304,7 +312,7 @@ class Optional:
         return not bool(bytes(self.data))
 
 
-class StaticVariant:
+class StaticVariant(object):
     def __init__(self, d, type_id):
         self.data = d
         self.type_id = type_id
@@ -316,7 +324,7 @@ class StaticVariant:
         return json.dumps([self.type_id, self.data.json()])
 
 
-class Map:
+class Map(object):
     def __init__(self, data):
         self.data = data
 
@@ -334,7 +342,7 @@ class Map:
         return json.dumps(r)
 
 
-class Id:
+class Id(object):
     def __init__(self, d):
         self.data = Varint32(d)
 
@@ -345,7 +353,7 @@ class Id:
         return str(self.data)
 
 
-class VoteId:
+class VoteId(object):
     def __init__(self, vote):
         parts = vote.split(":")
         assert len(parts) == 2
@@ -360,7 +368,7 @@ class VoteId:
         return "%d:%d" % (self.type, self.instance)
 
 
-class ObjectId:
+class ObjectId(object):
     """ Encodes object/protocol ids
     """
 

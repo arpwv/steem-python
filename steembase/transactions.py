@@ -1,3 +1,11 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import super
+from builtins import bytes
+from future import standard_library
+standard_library.install_aliases()
 import hashlib
 import logging
 import struct
@@ -263,7 +271,7 @@ class SignedTransaction(GrapheneObject):
         # Sign the message with every private key given!
         sigs = []
         for wif in self.privkeys:
-            p = bytes(PrivateKey(wif))
+            p = PrivateKey(wif).__bytes__()
             i = 0
             if USE_SECP256K1:
                 ndata = secp256k1.ffi.new("const int *ndata")
@@ -284,6 +292,10 @@ class SignedTransaction(GrapheneObject):
                         break
             else:
                 cnt = 0
+                print('from string')
+                print(type(p))
+                print(len(p))
+                print(p)
                 sk = ecdsa.SigningKey.from_string(p, curve=ecdsa.SECP256k1)
                 while 1:
                     cnt += 1
@@ -315,8 +327,9 @@ class SignedTransaction(GrapheneObject):
 
                     # Make sure signature is canonical!
                     #
-                    lenR = sigder[3]
-                    lenS = sigder[5 + lenR]
+                    lenR = ord(sigder[3])
+                    print(">> R = {}".format(lenR))
+                    lenS = ord(sigder[5 + lenR])
                     if lenR is 32 and lenS is 32:
                         # Derive the recovery parameter
                         #
